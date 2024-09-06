@@ -1,12 +1,20 @@
 {
     "version": "2.0",
     "logging": {
-        "applicationInsights": {
-            "samplingSettings": {
-                "isEnabled": true,
-                "excludedTypes": "Request"
-            },
-            "enableLiveMetricsFilters": true
+      "applicationInsights": {
+        "samplingSettings": {
+          "isEnabled": true,
+          "excludedTypes": "Request"
         }
+      }
+    },
+    "extensions": {
+      "durableTask": {
+        "storageProvider": {
+          "connectionStringName": "DurableManagementStorage",
+          "maxQueuePollingInterval": "00:00:01"
+        },
+        "hubName": "%TaskHubName%"
+      }
     }
-}
+  }
