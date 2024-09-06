@@ -11,6 +11,9 @@ param lineChannelAccessToken string
 
 var lineChannelAccessTokenSecretName = 'line-channel-access-token'
 
+// 追加
+param signalRConnectionString string
+
 var functionAppCoreAppSettings = [
   {
     name: 'AzureWebJobsStorage'
@@ -44,6 +47,18 @@ var functionAppCoreAppSettings = [
     name: 'LineBotSettings:ChannelAccessToken'
     value: '@Microsoft.KeyVault(VaultName=${keyVaultName};SecretName=${lineChannelAccessTokenSecretName})'
   }
+  {
+    name: 'DurableManagementStorage'
+    value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+  }
+  {
+    name: 'TaskHubName'
+    value: 'ProdTaskHub'
+  }
+  {
+    name: 'AzureSignalRConnectionString'
+    value: signalRConnectionString
+  }
 ]
 var functionAppAppSettings = length(functionAppAdditionalAppSettings) == 0 ? functionAppCoreAppSettings : concat(functionAppCoreAppSettings,functionAppAdditionalAppSettings)
 
@@ -76,7 +91,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
     httpsOnly: true
     siteConfig: {
       appSettings: functionAppAppSettings
-      netFrameworkVersion: 'v6.0'
+      netFrameworkVersion: 'v8.0'
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
     }
