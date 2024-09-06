@@ -27,6 +27,9 @@ param logAnalyticsName string = ''
 param resourceGroupName string = ''
 param storageAccountName string = ''
 
+// 追加
+param signalRName string = ''
+
 @description('Id of the user or app to assign application roles')
 param principalId string = ''
 
@@ -39,6 +42,23 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: !empty(resourceGroupName) ? resourceGroupName : '${abbrs.resourcesResourceGroups}${environmentName}'
   location: location
   tags: tags
+}
+
+// Real-time messaging service
+module signalR './app/signalr.bicep' = {
+  name: 'signalR'
+  scope: rg
+  params: {
+    name: !empty(signalRName) ? signalRName : '${abbrs.signalRServiceSignalR}${resourceToken}'
+    location: location
+    pricingTier: 'Free_F1'
+    capacity: 1
+    serviceMode: 'Serverless'
+    enableConnectivityLogs: true
+    enableMessagingLogs: true
+    enableLiveTrace: true
+    allowedOrigins: ['*']
+  }
 }
 
 // The application backend
@@ -54,8 +74,10 @@ module api './app/api.bicep' = {
     keyVaultName: keyVault.outputs.name
     storageAccountName: storage.outputs.name
     lineChannelAccessToken: lineChannelAccessToken
+    signalRConnectionString: 'Endpoint=https://${signalR.outputs.name}.service.signalr.net;AccessKey=${signalR.outputs.primaryKey};Version=1.0;'
   }
 }
+
 
 // Give the API access to KeyVault
 module apiKeyVaultAccess './core/security/keyvault-access.bicep' = {

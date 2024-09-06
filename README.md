@@ -1,11 +1,14 @@
-# LINE Bot C# Azure Functions Starter
+# Raspberry Pi カメラモジュールに動画を撮影・送信させる LINE Bot（Azure サーバーレス）
 
-GitHub Codespaces で開くだけで、最新の LINE OpenAPI に従った SDK をもとに LINE Bot 開発ができるテンプレートです。
+GitHub Codespaces で開き、最新の LINE OpenAPI に従った SDK をもとに動作させることができます。
 
 ## 使用技術
 
+- Raspberry Pi
 - C# (.NET 8 in-process)
 - Azure Functions
+- Azure SignalR Service
+- Azure Blob Storage
 - Azure Key Vault
 - Azure Application Insights
 - Azure Developer CLI (azd)
