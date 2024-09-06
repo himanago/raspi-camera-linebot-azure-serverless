@@ -59,8 +59,8 @@ namespace CameraClient
                     {
                         StartInfo = new ProcessStartInfo
                         {
-                            FileName = isDebug ? "cmd" : "bash",
-                            Arguments = isDebug ? $"/c \"{command}\"" : $"-c \"{command}\"",
+                            FileName = "bash",
+                            Arguments = $"-c \"{command}\"",
                             RedirectStandardOutput = true,
                             UseShellExecute = false,
                             CreateNoWindow = true,
