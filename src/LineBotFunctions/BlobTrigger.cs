@@ -35,7 +35,7 @@ public class BlobTrigger
 
     [FunctionName("BlobTrigger")]
     public async Task Run(
-        [BlobTrigger("images/{name}", Connection = "AzureWebJobsStorage")]Stream myBlob,
+        [BlobTrigger("videos/{name}", Connection = "AzureWebJobsStorage")]Stream myBlob,
         [DurableClient] IDurableEntityClient entityClient,
         string name, ILogger log)
     {
